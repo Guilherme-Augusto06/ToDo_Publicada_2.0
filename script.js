@@ -45,25 +45,7 @@ async function carregarDespesas() {
 
 
 // Função para editar uma despesa
-async function editarDespesa(id, despesaAtual, valorAtual) {
-  const novoDespesa = prompt('Digite a nova despesa:', despesaAtual);
-  const novoValor = parseFloat(prompt('Digite o novo valor:', valorAtual).replace(',', '.'));
 
-  if (!novoDespesa || isNaN(novoValor)) {
-      alert('Preencha os campos corretamente.');
-      return;
-  }
-
-  try {
-      const response = await axios.put(`http://127.0.0.1:5000/update/${id}`, { despesa: novoDespesa, valor: novoValor });
-      console.log(response.data);
-
-      // Recarrega a tabela
-      carregarDespesas();
-  } catch (error) {
-      console.error('Erro ao editar despesa:', error.message);
-  }
-}
 
 // Função para excluir uma despesa
 // Função para excluir uma despesa
@@ -118,33 +100,11 @@ async function adicionarDespesa() {
         console.error('Erro ao adicionar despesa:', error.message);
     }
 }
+// Exibir gastos mensais, somente um get com soma de todos os valores
+
 
 
 // Função para editar o salário
-async function editarSalario() {
-    const novoSalarioInput = document.getElementById('edit-salary-input');
-    const novoSalario = parseFloat(novoSalarioInput.value.replace(',', '.'));
-
-    if (isNaN(novoSalario)) {
-        alert('Digite um valor válido para o salário.');
-        return;
-    }
-
-    try {
-        const response = await axios.put('http://127.0.0.1:5000/update_salary', { salario: novoSalario });
-        console.log(response.data);
-
-        // Atualiza o salário exibido no modal principal
-        document.getElementById('user-salary').innerText = novoSalario.toFixed(2);
-
-        // Fecha o modal de edição de salário
-        const modal = new bootstrap.Modal(document.getElementById('modalEditSalary'));
-        modal.hide();
-    } catch (error) {
-        console.error('Erro ao editar salário:', error.message);
-    }
-}
-
 
 
 // Carrega as despesas ao carregar a página
@@ -171,3 +131,45 @@ function excluirDespesa(id) {
             });
     }
   }
+  async function editarDespesa(id, despesaAtual, valorAtual) {
+    const novoDespesa = prompt('Digite a nova despesa:', despesaAtual);
+    const novoValor = parseFloat(prompt('Digite o novo valor:', valorAtual).replace(',', '.'));
+  
+    if (!novoDespesa || isNaN(novoValor)) {
+        alert('Preencha os campos corretamente.');
+        return;
+    }
+  
+    try {
+        const response = await axios.put(`http://127.0.0.1:5000/update/${id}`, { despesa: novoDespesa, valor: novoValor });
+        console.log(response.data);
+  
+        // Recarrega a tabela
+        carregarDespesas();
+    } catch (error) {
+        console.error('Erro ao editar despesa:', error.message);
+    }
+  }
+  async function editarSalario() {
+    const novoSalarioInput = document.getElementById('edit-salary-input');
+    const novoSalario = parseFloat(novoSalarioInput.value.replace(',', '.'));
+
+    if (isNaN(novoSalario)) {
+        alert('Digite um valor válido para o salário.');
+        return;
+    }
+
+    try {
+        const response = await axios.put('http://127.0.0.1:5000/update_salary', { salario: novoSalario });
+        console.log(response.data);
+
+        // Atualiza o salário exibido no modal principal
+        document.getElementById('user-salary').innerText = novoSalario.toFixed(2);
+
+        // Fecha o modal de edição de salário
+        const modal = new bootstrap.Modal(document.getElementById('modalEditSalary'));
+        modal.hide();
+    } catch (error) {
+        console.error('Erro ao editar salário:', error.message);
+    }
+}
